@@ -5,6 +5,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize all modules
+    initPreloader();
     initScrollReveal();
     initSmoothScroll();
     initMenu();
@@ -16,6 +17,10 @@ document.addEventListener('DOMContentLoaded', () => {
     initParallax();
     initTiltEffect();
     initDarkMode();
+    initScrollToTop();
+    initTypingAnimation();
+    initCopyLink();
+    initTimelineAnimation();
 });
 
 // ============================================
@@ -579,6 +584,124 @@ window.addEventListener('resize', () => {
         // Recalculate positions or reinit effects if needed
     }, 250);
 });
+
+// ============================================
+// Scroll to Top Button
+// ============================================
+function initScrollToTop() {
+    const scrollTopBtn = document.getElementById('scrollTop');
+    if (!scrollTopBtn) return;
+
+    // Show/hide button based on scroll position
+    window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 500) {
+            scrollTopBtn.classList.add('visible');
+        } else {
+            scrollTopBtn.classList.remove('visible');
+        }
+    });
+
+    // Scroll to top on click
+    scrollTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+}
+
+// ============================================
+// Page Preloader
+// ============================================
+function initPreloader() {
+    const preloader = document.getElementById('preloader');
+    if (!preloader) return;
+
+    // Hide preloader after page loads
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            preloader.classList.add('hidden');
+            // Remove from DOM after animation
+            setTimeout(() => {
+                preloader.remove();
+            }, 500);
+        }, 1500);
+    });
+}
+
+// ============================================
+// Typing Animation
+// ============================================
+function initTypingAnimation() {
+    const typingText = document.getElementById('typingText');
+    if (!typingText) return;
+
+    const text = typingText.getAttribute('data-en');
+    let index = 0;
+    typingText.textContent = '';
+
+    function typeChar() {
+        if (index < text.length) {
+            typingText.textContent += text.charAt(index);
+            index++;
+            setTimeout(typeChar, 30);
+        }
+    }
+
+    // Start typing after a short delay
+    setTimeout(typeChar, 2000);
+}
+
+// ============================================
+// Copy Link Button
+// ============================================
+function initCopyLink() {
+    const copyBtn = document.getElementById('copyLink');
+    if (!copyBtn) return;
+
+    copyBtn.addEventListener('click', () => {
+        const url = 'https://conqer40.github.io/mohamed-elhawy-cv/';
+
+        navigator.clipboard.writeText(url).then(() => {
+            copyBtn.classList.add('copied');
+            const icon = copyBtn.querySelector('i');
+            icon.classList.remove('fa-link');
+            icon.classList.add('fa-check');
+
+            setTimeout(() => {
+                copyBtn.classList.remove('copied');
+                icon.classList.remove('fa-check');
+                icon.classList.add('fa-link');
+            }, 2000);
+        }).catch(err => {
+            console.error('Failed to copy:', err);
+        });
+    });
+}
+
+// ============================================
+// Timeline Animation
+// ============================================
+function initTimelineAnimation() {
+    const timelineItems = document.querySelectorAll('.timeline-item');
+    if (!timelineItems.length) return;
+
+    const observerOptions = {
+        threshold: 0.2
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+                setTimeout(() => {
+                    entry.target.classList.add('visible');
+                }, index * 200);
+            }
+        });
+    }, observerOptions);
+
+    timelineItems.forEach(item => observer.observe(item));
+}
 
 // ============================================
 // Console Message

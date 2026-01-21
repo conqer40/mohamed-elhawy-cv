@@ -21,6 +21,9 @@ document.addEventListener('DOMContentLoaded', () => {
     initTypingAnimation();
     initCopyLink();
     initTimelineAnimation();
+    initScrollProgress();
+    init3DTiltEffect();
+    initButtonRipple();
 });
 
 // ============================================
@@ -731,6 +734,71 @@ function shareToWhatsApp() {
     const url = encodeURIComponent(getShareUrl());
     const text = encodeURIComponent('Check out Mohamed Elhawy\'s CV - Logistics & Supply Chain Specialist - ');
     window.open(`https://wa.me/?text=${text}${url}`, '_blank');
+}
+
+// ============================================
+// Phase 3: New UI Effects
+// ============================================
+
+// 1. Scroll Progress Bar
+function initScrollProgress() {
+    const progressBar = document.getElementById('scrollProgress');
+    if (!progressBar) return;
+
+    window.addEventListener('scroll', () => {
+        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        progressBar.style.width = scrolled + "%";
+    });
+}
+
+// 2. 3D Tilt Effect for Cards
+function init3DTiltEffect() {
+    const cards = document.querySelectorAll('.tilt-card, .service-card, .project-card, .hobby-card, .language-card, .testimonial-card, .experience-card');
+
+    cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+
+            const rotateX = ((y - centerY) / centerY) * -10; // Max rotation 10deg
+            const rotateY = ((x - centerX) / centerX) * 10;
+
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+        });
+    });
+}
+
+// 3. Button Ripple Effect
+function initButtonRipple() {
+    const buttons = document.querySelectorAll('.btn');
+
+    buttons.forEach(button => {
+        button.addEventListener('click', function (e) {
+            const x = e.clientX - e.target.offsetLeft;
+            const y = e.clientY - e.target.offsetTop;
+
+            const ripple = document.createElement('span');
+            ripple.classList.add('ripple');
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+
+            this.appendChild(ripple);
+
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        });
+    });
 }
 
 // ============================================

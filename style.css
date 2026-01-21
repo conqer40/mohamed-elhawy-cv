@@ -2549,3 +2549,65 @@ body.rtl .timeline-item:hover .timeline-content {
         font-size: 11px;
     }
 }
+
+/* =========================================
+   PHASE 3 - NEW UI EFFECTS
+   ========================================= */
+
+/* 1. Scroll Progress Bar */
+.scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 4px;
+    background: var(--color-gradient);
+    z-index: 10001;
+    /* Above navbar and everything else */
+    transition: width 0.1s;
+    box-shadow: 0 0 10px rgba(196, 93, 53, 0.5);
+}
+
+/* 2. 3D Card Tilt Effect */
+.tilt-card {
+    transition: transform 0.1s ease;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+.tilt-content {
+    transform: translateZ(20px);
+}
+
+/* Apply 3D tilt to specific cards */
+.service-card,
+.project-card,
+.hobby-card,
+.language-card,
+.testimonial-card,
+.experience-card {
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+/* 3. Button Ripple Effect */
+.btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.ripple {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: scale(0);
+    animation: ripple 0.6s linear;
+    pointer-events: none;
+}
+
+@keyframes ripple {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}

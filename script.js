@@ -704,6 +704,36 @@ function initTimelineAnimation() {
 }
 
 // ============================================
+// Social Share Functions
+// ============================================
+function getShareUrl() {
+    // Use the live site URL
+    return 'https://conqer40.github.io/mohamed-elhawy-cv/';
+}
+
+function shareToLinkedIn() {
+    const url = encodeURIComponent(getShareUrl());
+    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank', 'width=600,height=400');
+}
+
+function shareToTwitter() {
+    const url = encodeURIComponent(getShareUrl());
+    const text = encodeURIComponent('Check out Mohamed Elhawy\'s CV - Logistics & Supply Chain Specialist');
+    window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank', 'width=600,height=400');
+}
+
+function shareToFacebook() {
+    const url = encodeURIComponent(getShareUrl());
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank', 'width=600,height=400');
+}
+
+function shareToWhatsApp() {
+    const url = encodeURIComponent(getShareUrl());
+    const text = encodeURIComponent('Check out Mohamed Elhawy\'s CV - Logistics & Supply Chain Specialist - ');
+    window.open(`https://wa.me/?text=${text}${url}`, '_blank');
+}
+
+// ============================================
 // Console Message
 // ============================================
 console.log('%c Mohamed Elhawy CV ', 'background: linear-gradient(135deg, #c45d35, #e87a50); color: white; padding: 10px 20px; border-radius: 5px; font-size: 16px; font-weight: bold;');

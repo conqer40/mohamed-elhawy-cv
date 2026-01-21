@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initLanguageToggle();
     initParallax();
     initTiltEffect();
+    initDarkMode();
 });
 
 // ============================================
@@ -67,6 +68,50 @@ function updateToggleButton() {
         arSpan.classList.add('active');
         enSpan.classList.remove('active');
     }
+}
+
+// ============================================
+// Dark Mode Toggle
+// ============================================
+function initDarkMode() {
+    const themeToggle = document.getElementById('themeToggle');
+    if (!themeToggle) return;
+
+    // Check for saved preference or system preference
+    const savedTheme = localStorage.getItem('theme');
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+        document.body.classList.add('dark-mode');
+    }
+
+    // Toggle dark mode on click
+    themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+
+        // Add transition class for smooth color change
+        document.body.style.transition = 'background-color 0.4s ease, color 0.4s ease';
+
+        // Save preference
+        const isDark = document.body.classList.contains('dark-mode');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+
+        // Remove transition after animation
+        setTimeout(() => {
+            document.body.style.transition = '';
+        }, 400);
+    });
+
+    // Listen for system theme changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+        if (!localStorage.getItem('theme')) {
+            if (e.matches) {
+                document.body.classList.add('dark-mode');
+            } else {
+                document.body.classList.remove('dark-mode');
+            }
+        }
+    });
 }
 
 // ============================================
